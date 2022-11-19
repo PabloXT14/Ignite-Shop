@@ -1,0 +1,21 @@
+import { createStitches } from '@stitches/react'
+
+export const {
+  config,
+  styled,
+  css,
+  globalCss,
+  keyframes,
+  getCssText,
+  theme,
+  createTheme,
+} = createStitches({
+  theme: {
+    colors: {
+      rocketseat: '#8257e6',
+      gray400: 'grainsboro',
+      gray500: 'lightgray',
+      white: '#FFFFFF',
+    }
+  }
+})
