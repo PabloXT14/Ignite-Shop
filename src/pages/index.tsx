@@ -3,7 +3,7 @@ import Head from "next/head";
 import { styled } from "../styles";
 
 const Button = styled("button", {
-  backgroundColor: '$rocketseat',
+  backgroundColor: '$green300',
   color: '$white',
   borderRadius: 4,
   border: 0,
