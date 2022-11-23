@@ -2,8 +2,7 @@ import { styled } from "..";
 
 export const HomeContainer = styled("main", {
   display: 'flex',
-  gap: '3rem',
-  backgroundColor: '',
+  // gap: '3rem',
   width: '100%',
   maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))', // 1180 + ((largura da tela - 1180) / 2)
   marginLeft: 'auto',
@@ -14,7 +13,7 @@ export const HomeContainer = styled("main", {
 export const Product = styled("a", {
   backgroundImage: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
   borderRadius: 8,
-  padding: '0.25rem',
+  // padding: '0.25rem',
   cursor: 'pointer',
   position: 'relative',
 
@@ -62,6 +61,30 @@ export const Product = styled("a", {
     footer: {
       transform: 'translateY(0%)',
       opacity: 1,
+    }
+  }
+})
+
+
+export const ArrowButton = styled("button", {
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  color: '$white',
+  zIndex: 999,
+  backgroundColor: 'transparent',
+  border: 'none',
+  outline: 'none',
+
+  variants: {
+    direction: {
+      left: {
+        left: 0,
+      },
+
+      right: {
+        right: 0,
+      }
     }
   }
 })
