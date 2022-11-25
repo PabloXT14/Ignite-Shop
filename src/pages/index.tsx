@@ -11,8 +11,8 @@ import shirt3 from '../assets/shirts/3.png'
 import * as S from '../styles/pages/home'
 
 
-export default function Home() {
-  const [sliderRef, instanceRef] = useKeenSlider({
+export default function Home(props) {
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 2, // quantidade de intens que irá aparecer sem precisar dar scroll no slide
       spacing: 48, // espaçamento em px entre os itens
@@ -94,4 +94,19 @@ export default function Home() {
       </S.Product>
     </S.HomeContainer>
   )
+}
+
+
+export const getServerSideProps = async () => {
+  // SIMULANDO DELAY DE BUSCA EM UMA API
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  
+  // ESTE CONSOLE SÓ APARECE NO LADO DO SERVIDOR EM NÃO DO CLIENTE
+  console.log('Executado do lado do servidor👍')
+
+  return {
+    props: {
+      listItems: [1, 2, 3]
+    },
+  }
 }

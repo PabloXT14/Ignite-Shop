@@ -7,7 +7,11 @@ export const HomeContainer = styled("main", {
   maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))', // 1180 + ((largura da tela - 1180) / 2)
   marginLeft: 'auto',
   minHeight: 656,
-  paddingBottom: '4rem',
+  marginBottom: '4rem',
+
+  // backgroundColor: '$green500',
+  // paddingRight: '6rem',
+
 })
 
 export const Product = styled("a", {
