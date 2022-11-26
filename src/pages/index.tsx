@@ -1,3 +1,4 @@
+import { stripe } from '../libs/stripe';
 import Image from 'next/image'
 import Head from "next/head";
 import 'keen-slider/keen-slider.min.css'
@@ -9,9 +10,20 @@ import shirt2 from '../assets/shirts/2.png'
 import shirt3 from '../assets/shirts/3.png'
 
 import * as S from '../styles/pages/home'
+import Stripe from 'stripe';
+import { GetServerSideProps } from 'next';
 
 
-export default function Home(props) {
+interface HomeProps {
+  products: {
+    id: string;
+    name: string;
+    imageUrl: string;
+    price: number;
+  }[]
+}
+
+export default function Home({ products }: HomeProps) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 2, // quantidade de intens que irá aparecer sem precisar dar scroll no slide
@@ -39,74 +51,44 @@ export default function Home(props) {
         <CaretRight size={48} />
       </S.ArrowButton>
 
-      <S.Product className="keen-slider__slide">
-        <Image src={shirt1} alt="" />
+      {products.map(product => {
+        return (
+          <S.Product key={product.id} className="keen-slider__slide">
+            <Image src={product.imageUrl} width={520} height={480} alt="" />
 
-        <footer>
-          <strong>Camiseta X</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </S.Product>
-
-      <S.Product className="keen-slider__slide">
-        <Image src={shirt2} alt="" />
-
-        <footer>
-          <strong>Camiseta Y</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </S.Product>
-
-      <S.Product className="keen-slider__slide">
-        <Image src={shirt3} alt="" />
-
-        <footer>
-          <strong>Camiseta Z</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </S.Product>
-
-      <S.Product className="keen-slider__slide">
-        <Image src={shirt1} alt="" />
-
-        <footer>
-          <strong>Camiseta X</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </S.Product>
-
-      <S.Product className="keen-slider__slide">
-        <Image src={shirt2} alt="" />
-
-        <footer>
-          <strong>Camiseta Y</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </S.Product>
-
-      <S.Product className="keen-slider__slide">
-        <Image src={shirt3} alt="" />
-
-        <footer>
-          <strong>Camiseta Z</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </S.Product>
+            <footer>
+              <strong>{product.name}</strong>
+              <span>{product.price}</span>
+            </footer>
+          </S.Product>
+        )
+      })}
     </S.HomeContainer>
   )
 }
 
 
-export const getServerSideProps = async () => {
-  // SIMULANDO DELAY DE BUSCA EM UMA API
-  await new Promise(resolve => setTimeout(resolve, 2000))
-  
-  // ESTE CONSOLE SÓ APARECE NO LADO DO SERVIDOR EM NÃO DO CLIENTE
-  console.log('Executado do lado do servidor👍')
+export const getServerSideProps: GetServerSideProps = async () => {
+  // BUSCANDO PRODUTOS NA API DO STRIPE
+  const response = await stripe.products.list({
+    expand: ['data.default_price']// como o <price> dos produtos não vem por padrão (pois este dado esta na relação da tabela de produtos com alguma tabela de prices) dizemos para a api do stripe retornar nos produtos dentro do objeto <default_price> o price para cada produto
+  })
+
+  // FILTRANDO DADOS QUE UTILIZAREMOS DOS PRODUTOS
+  const products = response.data.map(product => {
+    const price = product.default_price as Stripe.Price // tipando preço do produto
+
+    return {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.images[0],
+      price: price.unit_amount / 100, // deixando em centavos (melhor forma de trabalhar com dinheiro)
+    }
+  })
 
   return {
     props: {
-      listItems: [1, 2, 3]
+      products,
     },
   }
 }
