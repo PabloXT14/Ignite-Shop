@@ -5,13 +5,9 @@ import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import { CaretLeft, CaretRight } from 'phosphor-react'
 
-import shirt1 from '../assets/shirts/1.png'
-import shirt2 from '../assets/shirts/2.png'
-import shirt3 from '../assets/shirts/3.png'
-
 import * as S from '../styles/pages/home'
 import Stripe from 'stripe';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 
 
 interface HomeProps {
@@ -68,7 +64,7 @@ export default function Home({ products }: HomeProps) {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   // BUSCANDO PRODUTOS NA API DO STRIPE
   const response = await stripe.products.list({
     expand: ['data.default_price']// como o <price> dos produtos não vem por padrão (pois este dado esta na relação da tabela de produtos com alguma tabela de prices) dizemos para a api do stripe retornar nos produtos dentro do objeto <default_price> o price para cada produto
@@ -90,5 +86,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2,// 2 hours
   }
 }
