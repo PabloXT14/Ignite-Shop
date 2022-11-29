@@ -1,14 +1,15 @@
-import { stripe } from '../libs/stripe';
-import Image from 'next/image'
 import Head from "next/head";
+import Image from 'next/image'
+import Link from 'next/link'
+import { GetStaticProps } from 'next';
+import Stripe from 'stripe';
+import { stripe } from '../libs/stripe';
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import { CaretLeft, CaretRight } from 'phosphor-react'
 
-import * as S from '../styles/pages/home'
-import Stripe from 'stripe';
-import { GetStaticProps } from 'next';
 
+import * as S from '../styles/pages/home'
 
 interface HomeProps {
   products: {
@@ -49,14 +50,16 @@ export default function Home({ products }: HomeProps) {
 
       {products.map(product => {
         return (
-          <S.Product key={product.id} className="keen-slider__slide">
-            <Image src={product.imageUrl} width={520} height={480} alt="" />
+          <Link key={product.id} href={`/product/${product.id}`}>
+            <S.Product className="keen-slider__slide">
+              <Image src={product.imageUrl} width={520} height={480} alt="" />
 
-            <footer>
-              <strong>{product.name}</strong>
-              <span>{product.price}</span>
-            </footer>
-          </S.Product>
+              <footer>
+                <strong>{product.name}</strong>
+                <span>{product.price}</span>
+              </footer>
+            </S.Product>
+          </Link>
         )
       })}
     </S.HomeContainer>
