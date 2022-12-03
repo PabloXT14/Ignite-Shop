@@ -1,6 +1,8 @@
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import Stripe from 'stripe'
+import { SpinnerLoading } from '../../components/SpinnerLoading'
 import { stripe } from '../../libs/stripe'
 
 import * as S from '../../styles/pages/product'
@@ -16,6 +18,12 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
+  const { isFallback } = useRouter()
+
+  if (isFallback) { 
+    return <SpinnerLoading />
+  }
+
   return (
     <S.ProductContainer>
       <S.ImageContainer>
@@ -36,13 +44,15 @@ export default function Product({ product }: ProductProps) {
   )
 }
 
-// GetStaticPaths => diz quais parâmetros dinâmicos a nossa Geração Estatica (SSG) receberá
+// GetStaticPaths => diz quais parâmetros de rota dinâmicos a nossa Geração Estatica (SSG) receberá
 export const getStaticPaths: GetStaticPaths = async () => {
+  // Buscar os produtos mais vendidos / mais acessados
+
   return {
     paths: [
       { params: { id: 'prod_MrOKqBqqYz3p0A' }}// id de um dos produtos cadastrados no stripe
     ],
-    fallback: false,
+    fallback: true,
   }
 }
 
