@@ -8,6 +8,20 @@ export const globalStyles = globalCss({
     boxSizing: 'border-box',
   },
 
+  '::-webkit-scrollbar': {
+    width: '6px',
+    height: '6px',
+  },
+
+  '::-webkit-scrollbar-track': {
+    backgroundColor: 'transparent',
+  },
+
+  '::-webkit-scrollbar-thumb': {
+    borderRadius: '3px',
+    backgroundColor: '$gray500',
+  },
+
   body: {
     '-webkit-font-smoothing': 'antialiased',
     backgroundColor: '$gray900',
