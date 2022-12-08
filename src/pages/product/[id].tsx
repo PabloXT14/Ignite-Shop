@@ -35,7 +35,9 @@ export default function Product({ product }: ProductProps) {
       const { checkoutUrl } = response.data;
 
       //REDIRECIONANDO PARA PÁGINA EXTERNA
-      window.location.href = checkoutUrl;
+      if (typeof window !== undefined) {
+        window.location.href = checkoutUrl;
+      }
     } catch(error) {
       setIsCreatingCheckoutSession(false)
       alert('Falha ao redirecionar ao checkout!')

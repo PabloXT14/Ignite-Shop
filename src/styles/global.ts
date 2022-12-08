@@ -19,7 +19,7 @@ export const globalStyles = globalCss({
     fontWeight: 400,
   },
 
-  'button, a': {
+  'button': {
     cursor: 'pointer',
   },
 })
