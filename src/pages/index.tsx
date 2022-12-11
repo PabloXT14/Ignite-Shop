@@ -29,40 +29,44 @@ export default function Home({ products }: HomeProps) {
   })
 
   return (
-    <S.HomeContainer ref={sliderRef} className="keen-slider">
+    <>
       <Head>
-        <title>Ignite Shop</title>
+        <title>Home | Ignite Shop</title>
       </Head>
+    
+      <S.HomeContainer ref={sliderRef} className="keen-slider">
+        
 
-      <S.ArrowButton
-        direction="left"
-        onClick={() => instanceRef.current.prev()}
-      >
-        <CaretLeft size={48} />
-      </S.ArrowButton>
+        <S.ArrowButton
+          direction="left"
+          onClick={() => instanceRef.current.prev()}
+        >
+          <CaretLeft size={48} />
+        </S.ArrowButton>
 
-      <S.ArrowButton
-        direction="right"
-        onClick={() => instanceRef.current.next()}
-      >
-        <CaretRight size={48} />
-      </S.ArrowButton>
+        <S.ArrowButton
+          direction="right"
+          onClick={() => instanceRef.current.next()}
+        >
+          <CaretRight size={48} />
+        </S.ArrowButton>
 
-      {products.map(product => {
-        return (
-          <Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
-            <S.Product className="keen-slider__slide">
-              <Image src={product.imageUrl} width={520} height={480} alt="" />
+        {products.map(product => {
+          return (
+            <Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
+              <S.Product className="keen-slider__slide">
+                <Image src={product.imageUrl} width={520} height={480} alt="" />
 
-              <footer>
-                <strong>{product.name}</strong>
-                <span>{product.price}</span>
-              </footer>
-            </S.Product>
-          </Link>
-        )
-      })}
-    </S.HomeContainer>
+                <footer>
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </footer>
+              </S.Product>
+            </Link>
+          )
+        })}
+      </S.HomeContainer>
+    </>
   )
 }
 
