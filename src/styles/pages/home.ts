@@ -4,9 +4,10 @@ export const HomeContainer = styled("main", {
   display: 'flex',
   width: '100%',
   maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))', // 1180 + ((largura da tela - 1180) / 2)
+  // backgroundColor: 'OrangeRed',
   marginLeft: 'auto',
-  minHeight: 656,
-  marginBottom: '4rem',
+  minHeight: 'calc(2rem - 100vh)',
+  marginBottom: '1rem',
 })
 
 export const Product = styled("div", {
