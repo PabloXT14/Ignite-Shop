@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
