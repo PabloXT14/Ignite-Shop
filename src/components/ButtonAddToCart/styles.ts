@@ -1,6 +1,6 @@
 import { styled } from "../../styles";
 
-export const ButtonAddOnCart = styled("button", {
+export const ButtonContainer = styled("button", {
   border: '0',
   borderRadius: '6px',
   display: 'flex',

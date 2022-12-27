@@ -6,11 +6,11 @@ import Stripe from 'stripe';
 import { stripe } from '../libs/stripe';
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
-import { CaretLeft, CaretRight, Handbag } from 'phosphor-react'
+import { CaretLeft, CaretRight } from 'phosphor-react'
 
 
 import * as S from '../styles/pages/home'
-import { ButtonAddOnCart } from "../components/ButtonAddToCart/styles";
+import { ButtonAddToCart } from "../components/ButtonAddToCart";
 
 interface HomeProps {
   products: {
@@ -63,9 +63,12 @@ export default function Home({ products }: HomeProps) {
                     <strong>{product.name}</strong>
                     <span>{product.price}</span>
                   </div>
-                  <ButtonAddOnCart size="lg" bgColor="green" iconColor="white">
-                    <Handbag weight="bold"/>
-                  </ButtonAddOnCart>
+
+                  <ButtonAddToCart
+                    size="lg"
+                    bgColor="green"
+                    iconColor="white"
+                  />
                 </S.ProductFooter>
               </S.Product>
             </Link>
