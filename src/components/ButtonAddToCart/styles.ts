@@ -6,6 +6,25 @@ export const ButtonContainer = styled("button", {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  position: 'relative',
+
+  span: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    position: 'absolute',
+    width: '1.5rem',
+    height: '1.5rem',
+    right: '-7px',
+    top: '-7px',
+
+    backgroundColor: '$green500',
+    color: '$white',
+    border: '3px solid $gray900',
+    borderRadius: '50%',
+  },
+
 
   variants: {
     size: {

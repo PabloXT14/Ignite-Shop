@@ -11,23 +11,27 @@ import { CaretLeft, CaretRight } from 'phosphor-react'
 
 import * as S from '../styles/pages/home'
 import { ButtonAddToCart } from "../components/ButtonAddToCart";
+import { useShoppingCart } from "use-shopping-cart";
 
 interface HomeProps {
   products: {
     id: string;
     name: string;
     imageUrl: string;
-    price: string;
-  }[]
+    price: number;
+  }[];
+  productsCurrencyType: string;
 }
 
-export default function Home({ products }: HomeProps) {
+export default function Home({ products, productsCurrencyType }: HomeProps) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 2, // quantidade de intens que irá aparecer sem precisar dar scroll no slide
       spacing: 48, // espaçamento em px entre os itens
     },
   })
+  const { addItem } = useShoppingCart();
+
 
   return (
     <>
@@ -54,24 +58,38 @@ export default function Home({ products }: HomeProps) {
 
         {products.map(product => {
           return (
-            <Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
+            <div key={product.id}>
               <S.Product className="keen-slider__slide">
-                <Image src={product.imageUrl} width={520} height={480} alt="" />
+                <Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
+                  <Image src={product.imageUrl} width={520} height={480} alt="" />
+                </Link>
 
                 <S.ProductFooter>
                   <div>
                     <strong>{product.name}</strong>
-                    <span>{product.price}</span>
+                    <span>
+                      {new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      }).format(product.price / 100)}
+                    </span>
                   </div>
 
                   <ButtonAddToCart
                     size="lg"
                     bgColor="green"
                     iconColor="white"
+                    onClick={() => {
+                      addItem({
+                        ...product,
+                        currency: productsCurrencyType,
+                        sku: product.id,
+                      });
+                    }}
                   />
                 </S.ProductFooter>
               </S.Product>
-            </Link>
+            </div>
           )
         })}
       </S.HomeContainer>
@@ -86,24 +104,28 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ['data.default_price']// como o <price> dos produtos não vem por padrão (pois este dado esta na relação da tabela de produtos com alguma tabela de prices) dizemos para a api do stripe retornar nos produtos dentro do objeto <default_price> o price para cada produto
   })
 
+  // console.log(response.data);
+
+  let productsCurrencyType;
+
   // FILTRANDO DADOS QUE UTILIZAREMOS DOS PRODUTOS
   const products = response.data.map(product => {
     const price = product.default_price as Stripe.Price // tipando preço do produto
+
+    productsCurrencyType = price.currency;
 
     return {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(price.unit_amount / 100),
+      price: price.unit_amount,
     }
   })
 
   return {
     props: {
       products,
+      productsCurrencyType,
     },
     revalidate: 60 * 60 * 2,// 2 hours
   }
