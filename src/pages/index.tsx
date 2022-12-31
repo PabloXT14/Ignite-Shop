@@ -4,14 +4,13 @@ import Link from 'next/link'
 import { GetStaticProps } from 'next';
 import Stripe from 'stripe';
 import { stripe } from '../libs/stripe';
-import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
+import 'keen-slider/keen-slider.min.css'
 import { CaretLeft, CaretRight } from 'phosphor-react'
-
-
-import * as S from '../styles/pages/home'
 import { ButtonAddToCart } from "../components/ButtonAddToCart";
 import { useShoppingCart } from "use-shopping-cart";
+
+import * as S from '../styles/pages/home'
 
 interface HomeProps {
   products: {

@@ -2,7 +2,7 @@ import * as S from "./styles";
 import Image, { StaticImageData } from 'next/image';
 
 interface CartItemProps {
-  imageLink: StaticImageData;
+  imageLink: StaticImageData | string;
   title: string;
   price: number;
   action: () => void;
@@ -16,7 +16,7 @@ export function CartItem(props: CartItemProps) {
       </S.ImageContainer>
       <S.InfoContainer>
         <span>{props.title}</span>
-        <strong>R$ {props.price},90</strong>
+        <strong>R$ {props.price}</strong>
         <button onClick={props.action}>
           Remover
         </button>

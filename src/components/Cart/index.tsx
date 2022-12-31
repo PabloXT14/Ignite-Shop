@@ -1,11 +1,18 @@
+import Link from 'next/link';
+import { CartItem } from './CartItem';
+import { X } from 'phosphor-react';
+
 import * as Dialog from '@radix-ui/react-dialog';
 import * as S from './styles';
-import { X } from 'phosphor-react';
-import Link from 'next/link';
-import productImage from '../../assets/shirts/1.png';
-import { CartItem } from './CartItem';
+import { useShoppingCart } from 'use-shopping-cart';
 
 export default function Cart() {
+  const { removeItem, cartDetails, cartCount, formattedTotalPrice,  } = useShoppingCart();
+
+  function handleFinishBuy() {
+      console.log(cartDetails);
+  }
+
   return (
     <Dialog.Portal>
       <S.DialogOverlay />
@@ -19,40 +26,33 @@ export default function Cart() {
         <Dialog.Title>Sacola de compras</Dialog.Title>
 
         <section className="contentItems">
-          <CartItem
-            imageLink={productImage}
-            title="Camiseta Beyond the Limits"
-            price={79}
-            action={() => { console.log("Removeu produto") }}
-          />
+          {Object.keys(cartDetails).map(item => {
+            const itemDetails = cartDetails[item];
 
-          <CartItem
-            imageLink={productImage}
-            title="Camiseta Explorer"
-            price={62}
-            action={() => { console.log("Removeu produto") }}
-          />
-
-          <CartItem
-            imageLink={productImage}
-            title="Camiseta Ignite Lab | ReactJS"
-            price={89}
-            action={() => { console.log("Removeu produto") }}
-          />
+            return (
+              <CartItem
+                key={itemDetails.id}
+                imageLink={itemDetails.imageUrl}
+                title={itemDetails.name}
+                price={itemDetails.price}
+                action={() => { removeItem(itemDetails.id) }}
+              />
+            )
+          })}
         </section>
 
         <section className="summaryItems">
           <div>
             <span>Quantidade</span>
-            <span>3 itens</span>
+            <span>{cartCount} itens</span>
           </div>
 
           <div>
             <strong>Valor total</strong>
-            <strong>R$ 270,00</strong>
+            <strong>{formattedTotalPrice}</strong>
           </div>
 
-          <Link href="#" prefetch={false}>
+          <Link href="#" prefetch={false} onClick={handleFinishBuy}>
             Finalizar compra
           </Link>
         </section>
