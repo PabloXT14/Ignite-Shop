@@ -1,5 +1,6 @@
 import * as S from "./styles";
 import Image, { StaticImageData } from 'next/image';
+import { formatteMoney } from "../../../utils/formatter";
 
 interface CartItemProps {
   imageLink: StaticImageData | string;
@@ -9,6 +10,8 @@ interface CartItemProps {
 }
 
 export function CartItem(props: CartItemProps) {
+  const priceWithTwoDecimal = props.price / 100
+
   return (
     <S.CartItemContainer>
       <S.ImageContainer>
@@ -16,7 +19,7 @@ export function CartItem(props: CartItemProps) {
       </S.ImageContainer>
       <S.InfoContainer>
         <span>{props.title}</span>
-        <strong>R$ {props.price}</strong>
+        <strong>{formatteMoney(priceWithTwoDecimal)}</strong>
         <button onClick={props.action}>
           Remover
         </button>

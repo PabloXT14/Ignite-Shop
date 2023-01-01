@@ -11,6 +11,7 @@ import { ButtonAddToCart } from "../components/ButtonAddToCart";
 import { useShoppingCart } from "use-shopping-cart";
 
 import * as S from '../styles/pages/home'
+import { formatteMoney } from "../utils/formatter";
 
 interface HomeProps {
   products: {
@@ -56,6 +57,8 @@ export default function Home({ products, productsCurrencyType }: HomeProps) {
         </S.ArrowButton>
 
         {products.map(product => {
+          const priceWithTwoDecimals = product.price / 100;
+
           return (
             <div key={product.id}>
               <S.Product className="keen-slider__slide">
@@ -67,10 +70,7 @@ export default function Home({ products, productsCurrencyType }: HomeProps) {
                   <div>
                     <strong>{product.name}</strong>
                     <span>
-                      {new Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL',
-                      }).format(product.price / 100)}
+                      {formatteMoney(priceWithTwoDecimals)}
                     </span>
                   </div>
 

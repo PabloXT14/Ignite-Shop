@@ -1,12 +1,13 @@
-import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Stripe from 'stripe'
+import { useShoppingCart } from 'use-shopping-cart'
 import { SpinnerLoading } from '../../components/SpinnerLoading'
 import { stripe } from '../../libs/stripe'
+import { formatteMoney } from '../../utils/formatter'
 
 import * as S from '../../styles/pages/product'
 
@@ -15,7 +16,7 @@ interface ProductProps {
     id: string;
     name: string;
     imageUrl: string;
-    price: string;
+    price: number;
     description: string;
     defaultPriceId: string;
   }
@@ -24,25 +25,36 @@ interface ProductProps {
 export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter()
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
+  const { addItem, cartDetails } = useShoppingCart();
+  const priceWithTwoDecimals = product?.price / 100;
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
-      //COMO O API ROUTE DO NEXT RODA NO MESMO ENDEREÇO DA NOSSA APLICAÇÃO PODEMOS UTILIZAR DIRETO O AXIOS SEM UM BASEURL, POIS JÁ É SETADO POR PADRÃO A URL DE EXECUÇÃO DA NOSSA APLICAÇÃO
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId,
-      })
 
-      const { checkoutUrl } = response.data;
+  async function handleAddProductInCart() {
+    // try {
+    //   setIsCreatingCheckoutSession(true)
+    //   //COMO O API ROUTE DO NEXT RODA NO MESMO ENDEREÇO DA NOSSA APLICAÇÃO PODEMOS UTILIZAR DIRETO O AXIOS SEM UM BASEURL, POIS JÁ É SETADO POR PADRÃO A URL DE EXECUÇÃO DA NOSSA APLICAÇÃO
+    //   const response = await axios.post('/api/checkout', {
+    //     priceId: product.defaultPriceId,
+    //   })
 
-      //REDIRECIONANDO PARA PÁGINA EXTERNA
-      if (typeof window !== undefined) {
-        window.location.href = checkoutUrl;
-      }
-    } catch(error) {
-      setIsCreatingCheckoutSession(false)
-      alert('Falha ao redirecionar ao checkout!')
-    }
+    //   const { checkoutUrl } = response.data;
+
+    //   //REDIRECIONANDO PARA PÁGINA EXTERNA
+    //   if (typeof window !== undefined) {
+    //     window.location.href = checkoutUrl;
+    //   }
+    // } catch(error) {
+    //   setIsCreatingCheckoutSession(false)
+    //   alert('Falha ao redirecionar ao checkout!')
+    // }
+    await addItem({
+      ...product,
+      currency: 'BRL',
+      sku: product.id,
+    });
+  
+    console.log(cartDetails);
+
   }
 
   if (isFallback) { 
@@ -61,13 +73,13 @@ export default function Product({ product }: ProductProps) {
 
         <S.ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{formatteMoney(priceWithTwoDecimals)}</span>
 
           <p>{product.description}</p>
 
           <button
             disabled={isCreatingCheckoutSession}
-            onClick={() => { console.log("Adicionou produto a sacola") }}
+            onClick={handleAddProductInCart}
           >
             Colocar na sacola
           </button>
@@ -108,10 +120,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(price.unit_amount / 100),
+        price: price.unit_amount,
         description: product.description,
         defaultPriceId: price.id,
       }
