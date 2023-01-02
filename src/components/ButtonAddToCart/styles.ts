@@ -48,7 +48,8 @@ export const ButtonContainer = styled("button", {
       green: { backgroundColor: '$green500' },
     },
     iconColor: {
-      gray: { color: '$gray400' },
+      gray400: { color: '$gray400' },
+      gray300: { color: '$gray300' }, 
       white: { color: '$white' },
     },
   },
@@ -56,6 +57,6 @@ export const ButtonContainer = styled("button", {
   defaultVariants: {
     size: "md",
     bgColor: "gray",
-    iconColor: "gray",
+    iconColor: "gray400",
   },
 });

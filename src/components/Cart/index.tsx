@@ -1,16 +1,60 @@
 import Link from 'next/link';
 import { CartItem } from './CartItem';
 import { X } from 'phosphor-react';
+import { useShoppingCart } from 'use-shopping-cart';
+import { useState } from 'react';
+import axios from 'axios';
+import { SpinnerLoading } from '../SpinnerLoading';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import * as S from './styles';
-import { useShoppingCart } from 'use-shopping-cart';
 
 export default function Cart() {
   const { removeItem, cartDetails, cartCount, formattedTotalPrice,  } = useShoppingCart();
+  const [ isCreatingCheckoutSession, setIsCreatingCheckoutSession ] = useState(false);
 
-  function handleFinishBuy() {
-      console.log(cartDetails);
+  async function handleCheckout() {
+    try {
+      setIsCreatingCheckoutSession(true)
+
+      const productsConverted = Object.keys(cartDetails).map(item => {
+        const itemDetails = cartDetails[item];
+    
+        return { 
+          price: itemDetails.defaultPriceId,
+          quantity: itemDetails.quantity,
+         }
+      });
+
+      //COMO O API ROUTE DO NEXT RODA NO MESMO ENDEREÇO DA NOSSA APLICAÇÃO PODEMOS UTILIZAR DIRETO O AXIOS SEM UM BASEURL, POIS JÁ É SETADO POR PADRÃO A URL DE EXECUÇÃO DA NOSSA APLICAÇÃO
+      const response = await axios.post('/api/checkout', {
+        products: productsConverted,
+      })
+
+      const { checkoutUrl } = response.data;
+
+      //REDIRECIONANDO PARA PÁGINA EXTERNA
+      if (typeof window !== undefined) {
+        window.location.href = checkoutUrl;
+      }
+    } catch(error) {
+      setIsCreatingCheckoutSession(false)
+      alert('Falha ao redirecionar ao checkout!')
+    }
+    
+    /////////------------------
+
+    // try {
+    //   setIsCreatingCheckoutSession(true);
+    //   setTimeout(() => {
+    //     console.log(cartDetails);
+    //     setIsCreatingCheckoutSession(false)
+    //   }, 2000)
+
+    // } catch(error) {
+    //   console.log(error);
+    //   setIsCreatingCheckoutSession(false);
+    // }
   }
 
   return (
@@ -52,8 +96,15 @@ export default function Cart() {
             <strong>{formattedTotalPrice}</strong>
           </div>
 
-          <Link href="#" prefetch={false} onClick={handleFinishBuy}>
-            Finalizar compra
+          <Link
+            href="#"
+            prefetch={false}
+            onClick={handleCheckout}
+          >
+            { isCreatingCheckoutSession 
+              ? (<SpinnerLoading size="sm" />) 
+              : 'Finalizar compra'
+            }
           </Link>
         </section>
       </S.DialogContent>

@@ -1,15 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { stripe } from '../../libs/stripe'
 
+/* FAZER VALIDAÇÃO COM ZOD DOS PARAMETROS NO CORPO DA REQUISIÇÃO */ 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { priceId } = req.body;// id do preço de um produto cadastrado
+  const { products } = req.body;// id do preço de um produto cadastrado
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: "Method not allowed!" });
   }
 
-  if (!priceId) {
+  if (!products) {
     return res.status(400).json({ error: "Price ID not founded!" });
   }
 
@@ -20,12 +21,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     success_url: successUrl,// Redirecionar para rota/url de compra concluida
     cancel_url: cancelUrl,// Redirecionar para rota/url de compra cancelada
     mode: 'payment',// tipo de compra (payment = pagou uma vez só pelo produto)
-    line_items: [// informações sobre o produto a ser comprado
-      {
-        price: priceId,
-        quantity: 1
-      }
-    ]
+    // line_items: [// informações sobre o produto a ser comprado
+    //   {
+    //     price: priceId,
+    //     quantity: 1
+    //   }
+    // ]
+    line_items: products,
   })
 
   return res.status(201).json({

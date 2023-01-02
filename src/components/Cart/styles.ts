@@ -79,7 +79,7 @@ export const DialogContent = styled(Dialog.Content, {
   '& > .summaryItems': {
     marginTop: 'auto',
 
-    div: {
+    '& > div': {
       display: 'flex',
       width: '100%',
       justifyContent: 'space-between',
@@ -110,6 +110,7 @@ export const DialogContent = styled(Dialog.Content, {
       color: '$white',
       borderRadius: 8,
       padding: '1.25rem',
+      minHeight: '4.25rem',
       fontWeight: 'bold',
       fontSize: '$md',
       transition: 'background-color 0.4s',
@@ -121,9 +122,7 @@ export const DialogContent = styled(Dialog.Content, {
 
       '&:not(:disabled):hover': {
         backgroundColor: '$green300',
-      }, 
+      },
     }
   },
-
-  
 });

@@ -60,5 +60,10 @@ export const InfoContainer = styled("div", {
     fontWeight: 700,
     lineHeight: '160%',
     color: '$green500',
+    transition: 'color 0.4s',
+
+    '&:hover': {
+      color: '$green300',
+    },
   }
 });

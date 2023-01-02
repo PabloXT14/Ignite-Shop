@@ -7,10 +7,13 @@ type ButtonAddToCartProps = ButtonHTMLAttributes<HTMLButtonElement> & Stitches.V
   productsQuantity?: number;
 }
 
-export function ButtonAddToCart(props: ButtonAddToCartProps) {
+export function ButtonAddToCart({productsQuantity, ...props }: ButtonAddToCartProps) {
   return (
-    <ButtonContainer {...props}>
-      {props.productsQuantity ? (<span>{props.productsQuantity}</span>) : null}
+    <ButtonContainer
+      {...props}
+      iconColor={productsQuantity ? 'gray300' : props.iconColor}
+    >
+      {productsQuantity ? (<span>{productsQuantity}</span>) : null}
       <Handbag weight="bold"/>
     </ButtonContainer>
   );

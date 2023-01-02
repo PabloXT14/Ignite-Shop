@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Head from "next/head";
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,9 +10,9 @@ import 'keen-slider/keen-slider.min.css'
 import { CaretLeft, CaretRight } from 'phosphor-react'
 import { ButtonAddToCart } from "../components/ButtonAddToCart";
 import { useShoppingCart } from "use-shopping-cart";
+import { formatteMoney } from "../utils/formatter";
 
 import * as S from '../styles/pages/home'
-import { formatteMoney } from "../utils/formatter";
 
 interface HomeProps {
   products: {
@@ -19,6 +20,7 @@ interface HomeProps {
     name: string;
     imageUrl: string;
     price: number;
+    defaultPriceId: string;
   }[];
   productsCurrencyType: string;
 }
@@ -31,7 +33,6 @@ export default function Home({ products, productsCurrencyType }: HomeProps) {
     },
   })
   const { addItem } = useShoppingCart();
-
 
   return (
     <>
@@ -62,7 +63,14 @@ export default function Home({ products, productsCurrencyType }: HomeProps) {
           return (
             <div key={product.id}>
               <S.Product className="keen-slider__slide">
-                <Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  prefetch={false}
+                  onClick={() => {
+                    /* INICIAR EFEITO DE LOADING */
+                  }}
+                >
                   <Image src={product.imageUrl} width={520} height={480} alt="" />
                 </Link>
 
@@ -118,6 +126,7 @@ export const getStaticProps: GetStaticProps = async () => {
       name: product.name,
       imageUrl: product.images[0],
       price: price.unit_amount,
+      defaultPriceId: price.id,
     }
   })
 
