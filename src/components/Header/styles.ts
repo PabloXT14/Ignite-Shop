@@ -9,5 +9,9 @@ export const HeaderContainer = styled("header", {
   margin: '0 auto',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
+
+  button: {
+    marginLeft: 'auto',// empurra para longe da esquerda
+  }
 })

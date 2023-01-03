@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CartItem } from './CartItem';
+import { CartItem } from './components/CartItem';
 import { X } from 'phosphor-react';
 import { useShoppingCart } from 'use-shopping-cart';
 import { useState } from 'react';

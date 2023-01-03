@@ -1,6 +1,6 @@
 import * as S from "./styles";
 import Image, { StaticImageData } from 'next/image';
-import { formatteMoney } from "../../../utils/formatter";
+import { formatteMoney } from "../../../../utils/formatter";
 
 interface CartItemProps {
   imageLink: StaticImageData | string;
