@@ -48,22 +48,34 @@ export const InfoContainer = styled("div", {
     color: '$gray100',
   },
 
-  button: {
+  '.actionsContainer': {
     marginTop: 'auto',
-    border: 0,
-    backgroundColor: 'transparent',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    gap: '1rem',
 
-    fontSize: '1rem',
-    fontWeight: 700,
-    lineHeight: '160%',
-    color: '$green500',
-    transition: 'color 0.4s',
+    '& > div': {
+      maxWidth: '4.5rem',
+    },
 
-    '&:hover': {
-      color: '$green300',
+    'button.removeButton': {
+      border: 0,
+      borderRadius: 6,
+      backgroundColor: '$gray700',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '0 0.5rem',
+  
+      fontSize: '1rem',
+      fontWeight: 700,
+      lineHeight: '160%',
+      color: '$green500',
+      transition: 'color 0.4s, background-color 0.4s',
+  
+      '&:hover': {
+        color: '$green300',
+        backgroundColor: '$gray600',
+      },
     },
   }
 });

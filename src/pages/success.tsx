@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 import Stripe from 'stripe'
 import { useShoppingCart } from 'use-shopping-cart'
 import { stripe } from '../libs/stripe'
-import logoImg from '../assets/logo-ignite-shop.svg'
 
 import * as S from '../styles/pages/success'
 
@@ -19,7 +18,7 @@ interface SuccessProps {
 }
 
 export default function Success({ costumerName, products }: SuccessProps) {
-  const { clearCart } = useShoppingCart();
+  const { clearCart, cartCount } = useShoppingCart();
 
   useEffect(() => {
     clearCart();
@@ -46,8 +45,9 @@ export default function Success({ costumerName, products }: SuccessProps) {
         <h1>Compra efetuada</h1>
 
         <p>
-          Uhuul <strong>{costumerName}</strong>, sua compra de 
-          {products.length > 1 ? `${products.length} camisetas` : `${products.length} camiseta`}
+          Uhuul <strong>{costumerName}</strong>, sua compra de{' '}
+          {cartCount > 1 ? `${cartCount} camisetas` : `${cartCount} camiseta`}{' '}
+          de {products.length > 1 ? `${products.length} tipos diferentes` : `1 único tipo`}{' '}
           já está a caminho da sua casa.
         </p>
 

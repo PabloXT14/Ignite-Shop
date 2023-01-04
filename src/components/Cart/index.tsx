@@ -10,7 +10,12 @@ import * as Dialog from '@radix-ui/react-dialog';
 import * as S from './styles';
 
 export default function Cart() {
-  const { removeItem, cartDetails, cartCount, formattedTotalPrice,  } = useShoppingCart();
+  const { 
+    removeItem,
+    cartDetails,
+    cartCount,
+    formattedTotalPrice,
+  } = useShoppingCart();
   const [ isCreatingCheckoutSession, setIsCreatingCheckoutSession ] = useState(false);
 
   async function handleCheckout() {
@@ -41,20 +46,6 @@ export default function Cart() {
       setIsCreatingCheckoutSession(false)
       alert('Falha ao redirecionar ao checkout!')
     }
-    
-    /////////------------------
-
-    // try {
-    //   setIsCreatingCheckoutSession(true);
-    //   setTimeout(() => {
-    //     console.log(cartDetails);
-    //     setIsCreatingCheckoutSession(false)
-    //   }, 2000)
-
-    // } catch(error) {
-    //   console.log(error);
-    //   setIsCreatingCheckoutSession(false);
-    // }
   }
 
   return (
@@ -70,19 +61,20 @@ export default function Cart() {
         <Dialog.Title>Sacola de compras</Dialog.Title>
 
         <section className="contentItems">
-          {Object.keys(cartDetails).map(item => {
-            const itemDetails = cartDetails[item];
-
-            return (
-              <CartItem
-                key={itemDetails.id}
-                imageLink={itemDetails.imageUrl}
-                title={itemDetails.name}
-                price={itemDetails.price}
-                action={() => { removeItem(itemDetails.id) }}
-              />
-            )
-          })}
+          { Object.keys(cartDetails).length > 0 ? (
+            Object.keys(cartDetails).map(item => {
+              const itemDetails = cartDetails[item];
+  
+              return (
+                <CartItem
+                  key={itemDetails.id}
+                  product={itemDetails}
+                />
+              )
+            })
+          ) : (
+            <p>Seu carrinho está sem produtos, vamos comprar algo!!</p>
+          )}
         </section>
 
         <section className="summaryItems">
@@ -96,16 +88,15 @@ export default function Cart() {
             <strong>{formattedTotalPrice}</strong>
           </div>
 
-          <Link
-            href="#"
-            prefetch={false}
+          <button
             onClick={handleCheckout}
+            disabled={isCreatingCheckoutSession || cartCount < 1}
           >
             { isCreatingCheckoutSession 
               ? (<SpinnerLoading size="sm" />) 
               : 'Finalizar compra'
             }
-          </Link>
+          </button>
         </section>
       </S.DialogContent>
     </Dialog.Portal>

@@ -99,11 +99,12 @@ export const DialogContent = styled(Dialog.Content, {
       color: '$gray100',
     },
 
-    a: {
+    button: {
       marginTop: '3rem',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      width: '100%',
 
       backgroundColor: '$green500',
       border: 0,
