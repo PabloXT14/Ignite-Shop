@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Head from "next/head";
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,28 +10,34 @@ import { CaretLeft, CaretRight } from 'phosphor-react'
 import { ButtonAddToCart } from "../components/ButtonAddToCart";
 import { useShoppingCart } from "use-shopping-cart";
 import { formatteMoney } from "../utils/formatter";
+import { CartEntry as ICartEntry } from 'use-shopping-cart/core';
+import { SpinnerLoading } from "../components/SpinnerLoading";
+import { useState } from "react";
 
 import * as S from '../styles/pages/home'
 
 interface HomeProps {
-  products: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: number;
-    defaultPriceId: string;
-  }[];
-  productsCurrencyType: string;
+  products: ICartEntry[];
 }
 
-export default function Home({ products, productsCurrencyType }: HomeProps) {
+export default function Home({ products }: HomeProps) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 2, // quantidade de intens que irá aparecer sem precisar dar scroll no slide
       spacing: 48, // espaçamento em px entre os itens
     },
   })
-  const { addItem } = useShoppingCart();
+  const { addItem, currency } = useShoppingCart();
+  const [idProductClicked, setIdProductClicked] = useState('');
+
+  function handleAddingProductToCart(product: ICartEntry) {
+
+    addItem({
+      ...product,
+      currency: currency,
+      sku: product.id,
+    });
+  }
 
   return (
     <>
@@ -42,7 +47,6 @@ export default function Home({ products, productsCurrencyType }: HomeProps) {
     
       <S.HomeContainer ref={sliderRef} className="keen-slider">
         
-
         <S.ArrowButton
           direction="left"
           onClick={() => instanceRef.current.prev()}
@@ -67,10 +71,10 @@ export default function Home({ products, productsCurrencyType }: HomeProps) {
                   key={product.id}
                   href={`/product/${product.id}`}
                   prefetch={false}
-                  onClick={() => {
-                    /* INICIAR EFEITO DE LOADING */
-                  }}
+                  onClick={() => setIdProductClicked(product.id)}
                 >
+                  {idProductClicked === product.id && (<SpinnerLoading size="lg" className="spinnerLoading"/>)}
+                  
                   <Image src={product.imageUrl} width={520} height={480} alt="" />
                 </Link>
 
@@ -86,13 +90,7 @@ export default function Home({ products, productsCurrencyType }: HomeProps) {
                     size="lg"
                     bgColor="green"
                     iconColor="white"
-                    onClick={() => {
-                      addItem({
-                        ...product,
-                        currency: productsCurrencyType,
-                        sku: product.id,
-                      });
-                    }}
+                    onClick={() => handleAddingProductToCart(product)}
                   />
                 </S.ProductFooter>
               </S.Product>
@@ -111,15 +109,9 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ['data.default_price']// como o <price> dos produtos não vem por padrão (pois este dado esta na relação da tabela de produtos com alguma tabela de prices) dizemos para a api do stripe retornar nos produtos dentro do objeto <default_price> o price para cada produto
   })
 
-  // console.log(response.data);
-
-  let productsCurrencyType;
-
   // FILTRANDO DADOS QUE UTILIZAREMOS DOS PRODUTOS
   const products = response.data.map(product => {
     const price = product.default_price as Stripe.Price // tipando preço do produto
-
-    productsCurrencyType = price.currency;
 
     return {
       id: product.id,
@@ -130,11 +122,13 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   })
 
+  const hourInSeconds = 60 * 60;
+  const revalidateTimeInSeconds = hourInSeconds * 2
+
   return {
     props: {
       products,
-      productsCurrencyType,
     },
-    revalidate: 60 * 60 * 2,// 2 hours
+    revalidate: revalidateTimeInSeconds,
   }
 }

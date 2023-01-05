@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { CartItem } from './components/CartItem';
 import { X } from 'phosphor-react';
 import { useShoppingCart } from 'use-shopping-cart';
@@ -10,30 +9,29 @@ import * as Dialog from '@radix-ui/react-dialog';
 import * as S from './styles';
 
 export default function Cart() {
-  const { 
-    removeItem,
+  const {
     cartDetails,
     cartCount,
     formattedTotalPrice,
   } = useShoppingCart();
   const [ isCreatingCheckoutSession, setIsCreatingCheckoutSession ] = useState(false);
+  const products = Object.keys(cartDetails).map(item => cartDetails[item]);
 
   async function handleCheckout() {
     try {
       setIsCreatingCheckoutSession(true)
 
-      const productsConverted = Object.keys(cartDetails).map(item => {
-        const itemDetails = cartDetails[item];
+      const productsConvertedToAPI = products.map(product => {
     
         return { 
-          price: itemDetails.defaultPriceId,
-          quantity: itemDetails.quantity,
+          price: product.defaultPriceId,
+          quantity: product.quantity,
          }
       });
 
       //COMO O API ROUTE DO NEXT RODA NO MESMO ENDEREÇO DA NOSSA APLICAÇÃO PODEMOS UTILIZAR DIRETO O AXIOS SEM UM BASEURL, POIS JÁ É SETADO POR PADRÃO A URL DE EXECUÇÃO DA NOSSA APLICAÇÃO
       const response = await axios.post('/api/checkout', {
-        products: productsConverted,
+        products: productsConvertedToAPI,
       })
 
       const { checkoutUrl } = response.data;
@@ -61,20 +59,19 @@ export default function Cart() {
         <Dialog.Title>Sacola de compras</Dialog.Title>
 
         <section className="contentItems">
-          { Object.keys(cartDetails).length > 0 ? (
-            Object.keys(cartDetails).map(item => {
-              const itemDetails = cartDetails[item];
-  
-              return (
-                <CartItem
-                  key={itemDetails.id}
-                  product={itemDetails}
-                />
-              )
-            })
-          ) : (
-            <p>Seu carrinho está sem produtos, vamos comprar algo!!</p>
-          )}
+          { products.length > 0 
+            ? (
+              products.map(product => {   
+                return (
+                  <CartItem
+                    key={product.id}
+                    product={product}
+                  />
+                )
+              })
+            ) : (
+              <p>Seu carrinho está sem produtos, vamos comprar algo novo!!</p>
+            )}
         </section>
 
         <section className="summaryItems">

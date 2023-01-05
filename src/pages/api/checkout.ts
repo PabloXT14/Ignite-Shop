@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (!products) {
-    return res.status(400).json({ error: "Price ID not founded!" });
+    return res.status(400).json({ error: "Products not founded!" });
   }
 
   const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`

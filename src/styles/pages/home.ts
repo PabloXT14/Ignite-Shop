@@ -29,6 +29,11 @@ export const Product = styled("div", {
       transform: 'translateY(0%)',
       opacity: 1,
     }
+  },
+
+  '.spinnerLoading': {
+    position: 'absolute',
+    inset: 0,
   }
 });
 
