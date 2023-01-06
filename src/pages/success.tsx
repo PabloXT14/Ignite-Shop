@@ -15,10 +15,15 @@ interface SuccessProps {
     name: string;
     imageUrl: string;
   }[];
+  totalQuantityOfProducts: number;
 }
 
-export default function Success({ costumerName, products }: SuccessProps) {
-  const { clearCart, cartCount } = useShoppingCart();
+export default function Success({ 
+  costumerName,
+  products,
+  totalQuantityOfProducts 
+}: SuccessProps) {
+  const { clearCart } = useShoppingCart();
 
   useEffect(() => {
     clearCart();
@@ -46,8 +51,10 @@ export default function Success({ costumerName, products }: SuccessProps) {
 
         <p>
           Uhuul <strong>{costumerName}</strong>, sua compra de{' '}
-          {cartCount > 1 ? `${cartCount} camisetas` : `${cartCount} camiseta`}{' '}
-          de {products.length > 1 ? `${products.length} tipos diferentes` : `1 único tipo`}{' '}
+          { totalQuantityOfProducts > 1 
+            ? `${totalQuantityOfProducts} camisetas` 
+            : `${totalQuantityOfProducts} camiseta`}{' '}
+          (de {products.length > 1 ? `${products.length} tipos diferentes` : `1 único tipo`}){' '}
           já está a caminho da sua casa.
         </p>
 
@@ -78,6 +85,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     expand: ['line_items', 'line_items.data.price.product']
   });
 
+  const initialQuantity = 0;
+  const totalQuantityOfProducts = session.line_items.data.reduce(
+    (accumulator, currentItem) => accumulator + currentItem.quantity,
+    initialQuantity
+  );
+
   const costumerName = session.customer_details.name;
   const products = session.line_items.data.map(item => {
     const product = item.price.product as Stripe.Product;
@@ -92,6 +105,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       costumerName,
       products,
+      totalQuantityOfProducts,
     }
   }
 }

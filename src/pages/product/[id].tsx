@@ -7,25 +7,21 @@ import { useShoppingCart } from 'use-shopping-cart'
 import { SpinnerLoading } from '../../components/SpinnerLoading'
 import { stripe } from '../../libs/stripe'
 import { formatteMoney } from '../../utils/formatter'
-import { CartEntry as ICartEntry } from 'use-shopping-cart/core';
+import { IProduct } from '../../@types/ProductType'
 
 import * as S from '../../styles/pages/product'
 
 export interface ProductProps {
-  product: ICartEntry;
+  product: IProduct;
 }
 
 export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter()
-  const { addItem, currency } = useShoppingCart();
+  const { addItem } = useShoppingCart();
   const priceWithTwoDecimals = product.price / 100;
 
   async function handleAddingProductToCart() {
-    addItem({
-      ...product,
-      currency: currency,
-      sku: product.id,
-    });
+    addItem(product);
   }
 
   if (isFallback) { 

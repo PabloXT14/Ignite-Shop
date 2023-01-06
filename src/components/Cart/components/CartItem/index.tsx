@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { QuantityInput } from "../QuantityInput";
-import { CartEntry as ICartEntry } from 'use-shopping-cart/core';
 import { useShoppingCart } from 'use-shopping-cart';
+import { IProduct } from '../../../../@types/ProductType';
 
 import * as S from "./styles";
 
 interface CartItemProps {
-  product: ICartEntry;// tipagem dos produtos do carrinho
+  product: IProduct;// tipagem dos produtos do carrinho
 }
 
 export function CartItem({ product }: CartItemProps) {

@@ -10,33 +10,38 @@ import { CaretLeft, CaretRight } from 'phosphor-react'
 import { ButtonAddToCart } from "../components/ButtonAddToCart";
 import { useShoppingCart } from "use-shopping-cart";
 import { formatteMoney } from "../utils/formatter";
-import { CartEntry as ICartEntry } from 'use-shopping-cart/core';
 import { SpinnerLoading } from "../components/SpinnerLoading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IProduct } from "../@types/ProductType";
 
 import * as S from '../styles/pages/home'
+import { ProductSkeleton } from "../components/ProductSkeleton";
 
 interface HomeProps {
-  products: ICartEntry[];
+  products: IProduct[];
 }
 
 export default function Home({ products }: HomeProps) {
+  const [isLoadingDatas, setIsLoadingDatas] = useState(false); 
+  // useEffect(() => {
+  //   // fake loading to use skeleton loading
+  //   const timeOut = setTimeout(() => setIsLoadingDatas(false), 2000)
+
+  //   return () => clearTimeout(timeOut);
+  // }, []);
+
+
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 2, // quantidade de intens que irá aparecer sem precisar dar scroll no slide
       spacing: 48, // espaçamento em px entre os itens
     },
   })
-  const { addItem, currency } = useShoppingCart();
+  const { addItem } = useShoppingCart();
   const [idProductClicked, setIdProductClicked] = useState('');
 
-  function handleAddingProductToCart(product: ICartEntry) {
-
-    addItem({
-      ...product,
-      currency: currency,
-      sku: product.id,
-    });
+  function handleAddingProductToCart(product: IProduct) {
+    addItem(product);
   }
 
   return (
@@ -61,42 +66,50 @@ export default function Home({ products }: HomeProps) {
           <CaretRight size={48} />
         </S.ArrowButton>
 
-        {products.map(product => {
-          const priceWithTwoDecimals = product.price / 100;
+        { isLoadingDatas
+          ? (
+            <>
+              <ProductSkeleton />
+              <ProductSkeleton />
+              <ProductSkeleton />
+            </>
+          ) : (
+            products.map(product => {
+              const priceWithTwoDecimals = product.price / 100;
 
-          return (
-            <div key={product.id}>
-              <S.Product className="keen-slider__slide">
-                <Link
-                  key={product.id}
-                  href={`/product/${product.id}`}
-                  prefetch={false}
-                  onClick={() => setIdProductClicked(product.id)}
-                >
-                  {idProductClicked === product.id && (<SpinnerLoading size="lg" className="spinnerLoading"/>)}
-                  
-                  <Image src={product.imageUrl} width={520} height={480} alt="" />
-                </Link>
+              return (
+                <div key={product.id}>
+                  <S.Product className="keen-slider__slide">
+                    <Link
+                      key={product.id}
+                      href={`/product/${product.id}`}
+                      prefetch={false}
+                      onClick={() => setIdProductClicked(product.id)}
+                    >
+                      {idProductClicked === product.id && (<SpinnerLoading size="lg" className="spinnerLoading"/>)}
+                      
+                      <Image src={product.imageUrl} width={520} height={480} alt="" />
+                    </Link>
 
-                <S.ProductFooter>
-                  <div>
-                    <strong>{product.name}</strong>
-                    <span>
-                      {formatteMoney(priceWithTwoDecimals)}
-                    </span>
-                  </div>
+                    <S.ProductFooter>
+                      <div>
+                        <strong>{product.name}</strong>
+                        <span>
+                          {formatteMoney(priceWithTwoDecimals)}
+                        </span>
+                      </div>
 
-                  <ButtonAddToCart
-                    size="lg"
-                    bgColor="green"
-                    iconColor="white"
-                    onClick={() => handleAddingProductToCart(product)}
-                  />
-                </S.ProductFooter>
-              </S.Product>
-            </div>
-          )
-        })}
+                      <ButtonAddToCart
+                        size="lg"
+                        bgColor="green"
+                        iconColor="white"
+                        onClick={() => handleAddingProductToCart(product)}
+                      />
+                    </S.ProductFooter>
+                  </S.Product>
+                </div>
+            )})
+        )}
       </S.HomeContainer>
     </>
   )

@@ -4,6 +4,7 @@ import { useShoppingCart } from 'use-shopping-cart';
 import { useState } from 'react';
 import axios from 'axios';
 import { SpinnerLoading } from '../SpinnerLoading';
+import { IProduct } from '../../@types/ProductType';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import * as S from './styles';
@@ -15,23 +16,15 @@ export default function Cart() {
     formattedTotalPrice,
   } = useShoppingCart();
   const [ isCreatingCheckoutSession, setIsCreatingCheckoutSession ] = useState(false);
-  const products = Object.keys(cartDetails).map(item => cartDetails[item]);
+  const products: IProduct[] = Object.keys(cartDetails).map(item => cartDetails[item]);
 
   async function handleCheckout() {
     try {
       setIsCreatingCheckoutSession(true)
 
-      const productsConvertedToAPI = products.map(product => {
-    
-        return { 
-          price: product.defaultPriceId,
-          quantity: product.quantity,
-         }
-      });
-
       //COMO O API ROUTE DO NEXT RODA NO MESMO ENDEREÇO DA NOSSA APLICAÇÃO PODEMOS UTILIZAR DIRETO O AXIOS SEM UM BASEURL, POIS JÁ É SETADO POR PADRÃO A URL DE EXECUÇÃO DA NOSSA APLICAÇÃO
       const response = await axios.post('/api/checkout', {
-        products: productsConvertedToAPI,
+        products: products,
       })
 
       const { checkoutUrl } = response.data;
