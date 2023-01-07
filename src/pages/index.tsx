@@ -22,21 +22,21 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-  const [isLoadingDatas, setIsLoadingDatas] = useState(false); 
-  // useEffect(() => {
-  //   // fake loading to use skeleton loading
-  //   const timeOut = setTimeout(() => setIsLoadingDatas(false), 2000)
-
-  //   return () => clearTimeout(timeOut);
-  // }, []);
-
-
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
-      perView: 2, // quantidade de intens que irá aparecer sem precisar dar scroll no slide
+      perView:'auto', // quantidade de intens que irá aparecer sem precisar dar scroll no slide
       spacing: 48, // espaçamento em px entre os itens
     },
   })
+
+  const [isLoadingDatas, setIsLoadingDatas] = useState(true); 
+  useEffect(() => {
+    // fake loading to use skeleton loading
+    const timeOut = setTimeout(() => setIsLoadingDatas(false), 2000)
+
+    return () => clearTimeout(timeOut);
+  }, []);
+
   const { addItem } = useShoppingCart();
   const [idProductClicked, setIdProductClicked] = useState('');
 
@@ -50,66 +50,68 @@ export default function Home({ products }: HomeProps) {
         <title>Home | Ignite Shop</title>
       </Head>
     
-      <S.HomeContainer ref={sliderRef} className="keen-slider">
+      <S.HomeContainer>
         
-        <S.ArrowButton
-          direction="left"
-          onClick={() => instanceRef.current.prev()}
-        >
-          <CaretLeft size={48} />
-        </S.ArrowButton>
+       <div ref={sliderRef} className="keen-slider">
+          <S.ArrowButton
+            direction="left"
+            onClick={() => instanceRef.current.prev()}
+          >
+            <CaretLeft size={48} />
+          </S.ArrowButton>
 
-        <S.ArrowButton
-          direction="right"
-          onClick={() => instanceRef.current.next()}
-        >
-          <CaretRight size={48} />
-        </S.ArrowButton>
+          <S.ArrowButton
+            direction="right"
+            onClick={() => instanceRef.current.next()}
+          >
+            <CaretRight size={48} />
+          </S.ArrowButton>
 
-        { isLoadingDatas
-          ? (
-            <>
-              <ProductSkeleton />
-              <ProductSkeleton />
-              <ProductSkeleton />
-            </>
-          ) : (
-            products.map(product => {
-              const priceWithTwoDecimals = product.price / 100;
+          { isLoadingDatas
+            ? (
+              <>
+                <ProductSkeleton className="keen-slider__slide" />
+                <ProductSkeleton className="keen-slider__slide" />
+                <ProductSkeleton className="keen-slider__slide" />
+              </>
+            ) : (
+              products.map(product => {
+                const priceWithTwoDecimals = product.price / 100;
 
-              return (
-                <div key={product.id}>
-                  <S.Product className="keen-slider__slide">
-                    <Link
-                      key={product.id}
-                      href={`/product/${product.id}`}
-                      prefetch={false}
-                      onClick={() => setIdProductClicked(product.id)}
-                    >
-                      {idProductClicked === product.id && (<SpinnerLoading size="lg" className="spinnerLoading"/>)}
-                      
-                      <Image src={product.imageUrl} width={520} height={480} alt="" />
-                    </Link>
+                return (
+                  <div key={product.id}>
+                    <S.Product className="keen-slider__slide">
+                      <Link
+                        key={product.id}
+                        href={`/product/${product.id}`}
+                        prefetch={false}
+                        onClick={() => setIdProductClicked(product.id)}
+                      >
+                        {idProductClicked === product.id && (<SpinnerLoading size="lg" className="spinnerLoading"/>)}
+                        
+                        <Image src={product.imageUrl} width={520} height={480} alt="" />
+                      </Link>
 
-                    <S.ProductFooter>
-                      <div>
-                        <strong>{product.name}</strong>
-                        <span>
-                          {formatteMoney(priceWithTwoDecimals)}
-                        </span>
-                      </div>
+                      <S.ProductFooter>
+                        <div>
+                          <strong>{product.name}</strong>
+                          <span>
+                            {formatteMoney(priceWithTwoDecimals)}
+                          </span>
+                        </div>
 
-                      <ButtonAddToCart
-                        size="lg"
-                        bgColor="green"
-                        iconColor="white"
-                        onClick={() => handleAddingProductToCart(product)}
-                      />
-                    </S.ProductFooter>
-                  </S.Product>
-                </div>
-            )})
-        )}
+                        <ButtonAddToCart
+                          size="lg"
+                          bgColor="green"
+                          iconColor="white"
+                          onClick={() => handleAddingProductToCart(product)}
+                        />
+                      </S.ProductFooter>
+                    </S.Product>
+                  </div>
+              )})
+          )}
+       </div>
       </S.HomeContainer>
     </>
   )

@@ -52,19 +52,16 @@ export default function Cart() {
         <Dialog.Title>Sacola de compras</Dialog.Title>
 
         <section className="contentItems">
-          { products.length > 0 
-            ? (
-              products.map(product => {   
-                return (
-                  <CartItem
-                    key={product.id}
-                    product={product}
-                  />
-                )
-              })
-            ) : (
-              <p>Seu carrinho está sem produtos, vamos comprar algo novo!!</p>
-            )}
+          {products.length <= 0 && <p>Seu carrinho está sem produtos, vamos comprar algo novo!!</p>}
+
+          {products.map(product => {   
+            return (
+              <CartItem
+                key={product.id}
+                product={product}
+              />
+            )
+          })}
         </section>
 
         <section className="summaryItems">
@@ -80,7 +77,7 @@ export default function Cart() {
 
           <button
             onClick={handleCheckout}
-            disabled={isCreatingCheckoutSession || cartCount < 1}
+            disabled={isCreatingCheckoutSession || cartCount <= 0}
           >
             { isCreatingCheckoutSession 
               ? (<SpinnerLoading size="sm" />) 

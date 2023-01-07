@@ -1,19 +1,18 @@
 import { Handbag } from 'phosphor-react';
 import { ButtonContainer } from './styles';
-import type * as Stitches from '@stitches/react';
-import { ButtonHTMLAttributes } from 'react';
+import { ComponentProps } from 'react';
 
-type ButtonAddToCartProps = ButtonHTMLAttributes<HTMLButtonElement> & Stitches.VariantProps<typeof ButtonContainer> & {
+type ButtonAddToCartProps = ComponentProps<typeof ButtonContainer> & {
   productsQuantity?: number;
 }
 
-export function ButtonAddToCart({productsQuantity, ...props }: ButtonAddToCartProps) {
+export function ButtonAddToCart({productsQuantity = 0, ...props }: ButtonAddToCartProps) {
   return (
     <ButtonContainer
       {...props}
       iconColor={productsQuantity ? 'gray300' : props.iconColor}
     >
-      {productsQuantity ? (<span>{productsQuantity}</span>) : null}
+      {productsQuantity  > 0 && <span>{productsQuantity}</span>}
       <Handbag weight="bold"/>
     </ButtonContainer>
   );

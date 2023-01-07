@@ -25,7 +25,7 @@ export default function Header() {
 
       {showCart && (
         <Dialog.Root open={isCartOpen} onOpenChange={setIsCartOpen}>
-          <Dialog.Trigger asChild={true}>
+          <Dialog.Trigger asChild>
             <ButtonAddToCart productsQuantity={cartCount} />
           </Dialog.Trigger>
 

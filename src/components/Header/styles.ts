@@ -1,5 +1,4 @@
 import { styled } from "../../styles";
-import * as Dialog from '@radix-ui/react-dialog';
 
 
 export const HeaderContainer = styled("header", {

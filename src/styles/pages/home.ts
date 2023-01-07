@@ -5,7 +5,7 @@ export const HomeContainer = styled("main", {
   width: '100%',
   maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))', // 1180 + ((largura da tela - 1180) / 2)
   marginLeft: 'auto',
-  minHeight: 'calc(2rem - 100vh)',
+  // minHeight: 'calc(2rem - 100vh)',
   marginBottom: '1rem',
 })
 
