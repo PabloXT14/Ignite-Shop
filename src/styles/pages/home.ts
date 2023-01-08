@@ -7,7 +7,18 @@ export const HomeContainer = styled("main", {
   marginLeft: 'auto',
   // minHeight: 'calc(2rem - 100vh)',
   marginBottom: '1rem',
+  overflow: 'hidden',
 })
+
+export const SliderContainer = styled("div", {
+  position: "relative",
+  display: "flex",
+  gap: "3rem",
+  margin: "0 auto",
+  ".embla__slide": {
+    
+  }
+});
 
 export const Product = styled("div", {
   backgroundImage: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',

@@ -1,6 +1,6 @@
 import { Handbag } from 'phosphor-react';
 import { ButtonContainer } from './styles';
-import { ComponentProps } from 'react';
+import React, { ComponentProps } from 'react';
 
 type ButtonAddToCartProps = ComponentProps<typeof ButtonContainer> & {
   productsQuantity?: number;

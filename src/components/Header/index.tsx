@@ -13,7 +13,7 @@ import Link from "next/link";
 export default function Header() {
   const { pathname } = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { removeItem, cartDetails, clearCart, formattedTotalPrice, cartCount } = useShoppingCart();
+  const { cartCount } = useShoppingCart();
 
   const showCart = pathname !== "/success" 
 
