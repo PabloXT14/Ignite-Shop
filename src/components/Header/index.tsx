@@ -12,7 +12,6 @@ import Link from "next/link";
 
 export default function Header() {
   const { pathname } = useRouter();
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const { cartCount } = useShoppingCart();
 
   const showCart = pathname !== "/success" 
@@ -23,15 +22,7 @@ export default function Header() {
         <Image src={logoImg} alt="" />
       </Link>
 
-      {showCart && (
-        <Dialog.Root open={isCartOpen} onOpenChange={setIsCartOpen}>
-          <Dialog.Trigger asChild>
-            <ButtonAddToCart productsQuantity={cartCount} />
-          </Dialog.Trigger>
-
-          <Cart />
-        </Dialog.Root>
-      )}
+      {showCart && <Cart />}
     </HeaderContainer>
   );
 }

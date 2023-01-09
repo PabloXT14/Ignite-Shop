@@ -8,6 +8,7 @@ import { IProduct } from '../../@types/ProductType';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import * as S from './styles';
+import { ButtonAddToCart } from '../ButtonAddToCart';
 
 export default function Cart() {
   const {
@@ -15,7 +16,7 @@ export default function Cart() {
     cartCount,
     formattedTotalPrice,
   } = useShoppingCart();
-  const [ isCreatingCheckoutSession, setIsCreatingCheckoutSession ] = useState(false);
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
   const products: IProduct[] = Object.keys(cartDetails).map(item => cartDetails[item]);
 
   async function handleCheckout() {
@@ -33,59 +34,65 @@ export default function Cart() {
       if (typeof window !== undefined) {
         window.location.href = checkoutUrl;
       }
-    } catch(error) {
+    } catch (error) {
       setIsCreatingCheckoutSession(false)
       alert('Falha ao redirecionar ao checkout!')
     }
   }
 
   return (
-    <Dialog.Portal>
-      <S.DialogOverlay />
-      <S.DialogContent>
-        <Dialog.Close asChild>
-          <button className="closeButton" aria-label="Close">
-            <X />
-          </button>
-        </Dialog.Close>
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <ButtonAddToCart productsQuantity={cartCount} />
+      </Dialog.Trigger>
 
-        <Dialog.Title>Sacola de compras</Dialog.Title>
+      <Dialog.Portal>
+        <S.DialogOverlay />
+        <S.DialogContent>
+          <Dialog.Close asChild>
+            <button className="closeButton" aria-label="Close">
+              <X />
+            </button>
+          </Dialog.Close>
 
-        <section className="contentItems">
-          {products.length <= 0 && <p>Seu carrinho está sem produtos, vamos comprar algo novo!!</p>}
+          <Dialog.Title>Sacola de compras</Dialog.Title>
 
-          {products.map(product => {   
-            return (
-              <CartItem
-                key={product.id}
-                product={product}
-              />
-            )
-          })}
-        </section>
+          <section className="contentItems">
+            {products.length <= 0 && <p>Seu carrinho está sem produtos, vamos comprar algo novo!!</p>}
 
-        <section className="summaryItems">
-          <div>
-            <span>Quantidade</span>
-            <span>{cartCount} itens</span>
-          </div>
+            {products.map(product => {
+              return (
+                <CartItem
+                  key={product.id}
+                  product={product}
+                />
+              )
+            })}
+          </section>
 
-          <div>
-            <strong>Valor total</strong>
-            <strong>{formattedTotalPrice}</strong>
-          </div>
+          <section className="summaryItems">
+            <div>
+              <span>Quantidade</span>
+              <span>{cartCount} itens</span>
+            </div>
 
-          <button
-            onClick={handleCheckout}
-            disabled={isCreatingCheckoutSession || cartCount <= 0}
-          >
-            { isCreatingCheckoutSession 
-              ? (<SpinnerLoading size="sm" />) 
-              : 'Finalizar compra'
-            }
-          </button>
-        </section>
-      </S.DialogContent>
-    </Dialog.Portal>
+            <div>
+              <strong>Valor total</strong>
+              <strong>{formattedTotalPrice}</strong>
+            </div>
+
+            <button
+              onClick={handleCheckout}
+              disabled={isCreatingCheckoutSession || cartCount <= 0}
+            >
+              {isCreatingCheckoutSession
+                ? (<SpinnerLoading size="sm" />)
+                : 'Finalizar compra'
+              }
+            </button>
+          </section>
+        </S.DialogContent>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

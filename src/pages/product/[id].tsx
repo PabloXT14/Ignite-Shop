@@ -18,7 +18,7 @@ export interface ProductProps {
 export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter()
   const { addItem } = useShoppingCart();
-  const priceWithTwoDecimals = product.price / 100;
+  const priceWithTwoDecimals = product?.price / 100;
 
   async function handleAddingProductToCart() {
     addItem(product);

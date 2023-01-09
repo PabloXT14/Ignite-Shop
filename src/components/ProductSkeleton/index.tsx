@@ -1,16 +1,16 @@
 import { ComponentProps } from 'react';
-import * as S from './styles';
+import { ProductSkeletonContainer, SkeletonItem } from './styles';
 
-type ProductSkeletonProps = ComponentProps<typeof S.ProductSkeletonContainer>;
+type ProductSkeletonProps = ComponentProps<typeof ProductSkeletonContainer>;
 
 export function ProductSkeleton({ ...props }: ProductSkeletonProps) {
   return (
-    <S.ProductSkeletonContainer {...props}>
-      <S.SkeletonItem />
+    <ProductSkeletonContainer {...props}>
+      <SkeletonItem />
       <div>
-        <S.SkeletonItem />
-        <S.SkeletonItem />
+        <SkeletonItem />
+        <SkeletonItem />
       </div>
-    </S.ProductSkeletonContainer>
+    </ProductSkeletonContainer>
   )
 }

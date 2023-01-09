@@ -6,6 +6,7 @@ type ButtonAddToCartProps = ComponentProps<typeof ButtonContainer> & {
   productsQuantity?: number;
 }
 
+/* React.forwardRef: utilize essa estratégia de renderização do componente para deixar de aparecer um erro no console, no entanto, este erro não afeta em nada a aplicação em <dev> ou <prod> */
 export function ButtonAddToCart({productsQuantity = 0, ...props }: ButtonAddToCartProps) {
   return (
     <ButtonContainer

@@ -7,7 +7,7 @@ export const HomeContainer = styled("main", {
   marginLeft: 'auto',
   // minHeight: 'calc(2rem - 100vh)',
   marginBottom: '1rem',
-  overflow: 'hidden',
+  // overflow: 'hidden',
 })
 
 export const SliderContainer = styled("div", {
