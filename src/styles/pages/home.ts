@@ -5,19 +5,7 @@ export const HomeContainer = styled("main", {
   width: '100%',
   maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))', // 1180 + ((largura da tela - 1180) / 2)
   marginLeft: 'auto',
-  // minHeight: 'calc(2rem - 100vh)',
   marginBottom: '1rem',
-  // overflow: 'hidden',
-})
-
-export const SliderContainer = styled("div", {
-  position: "relative",
-  display: "flex",
-  gap: "3rem",
-  margin: "0 auto",
-  ".embla__slide": {
-    
-  }
 });
 
 export const Product = styled("div", {
@@ -85,27 +73,3 @@ export const ProductFooter = styled("footer", {
     lineHeight: '140%',
   },
 });
-
-
-export const ArrowButton = styled("button", {
-  position: 'absolute',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  color: '$white',
-  zIndex: 999,
-  backgroundColor: 'transparent',
-  border: 'none',
-  outline: 'none',
-
-  variants: {
-    direction: {
-      left: {
-        left: 0,
-      },
-
-      right: {
-        right: 0,
-      }
-    }
-  }
-})
