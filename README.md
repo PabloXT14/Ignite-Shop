@@ -43,11 +43,11 @@
 
 ## 💻 About
 
-<!-- O Github Blog é uma aplicação web que tem como objetivo mostrar visualmente com um design e layout mais bem elaborado os dados do criador deste aplicação, além das `issues` presentes neste mesmo repositório no Github, permitindo também a pesquisa por `issues` específicas.
+O Ignite Shop é um aplicação web de vendas de camisetas com temas do mundo dev, mostrando com detalhes a parte visual e informacional das camisetas, além de apresentar um carrinho onde o cliente pode adicionar as suas compras.  
 
-O principal conceito treinado nesta aplicação foi a utilização de API em projetos React, no caso, a API do Github.
+O principal conceito treinado nesta aplicação foi a utilização do framework Next.js, explorando conceitos como o de SSR(Server Side Rendering) e SSG(Static Site Generation), além da utilização da biblioteca Stitches.js para a estilização.
 
-O projeto foi desenvolvido como conclusão de um desafio do curso **Ignite** oferecida pela [Rocketseat](https://www.rocketseat.com.br/). O Ignite é um curso de especialização em stacks específicas amplamente utilizadas e valorizadas no mercado como React, React Native, Node.js e Elixir. -->
+O projeto foi desenvolvido como conclusão de um desafio do curso **Ignite** oferecida pela [Rocketseat](https://www.rocketseat.com.br/). O Ignite é um curso de especialização em stacks específicas amplamente utilizadas e valorizadas no mercado como React, React Native, Node.js e Elixir.
 
 ---
 
@@ -78,7 +78,10 @@ Você pode visualizar o layout do projeto através [desse link](https://www.figm
 ### Web
 
 <p align="center">
-  <img alt="Animated Web Demonstration" title="#Web" src=".github/ignite_shop-demonstration.gif" width="100%">
+  <img alt="Animated Web Demonstration" title="#Web" src=".github/ignite_shop-demonstration_01.gif" width="100%">
+</p>
+<p align="center">
+  <img alt="Animated Web Demonstration" title="#Web" src=".github/ignite_shop-demonstration_02.gif" width="100%">
 </p>
 
 <!-- ### Mobile
@@ -115,6 +118,14 @@ Antes de baixar o projeto você vai precisar ter instalado na sua máquina as se
 
 Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
 
+Precisará também fazer a seguinte configuração para rodar o projeto:
+* Criar uma conta e projeto no [Stripe](https://stripe.com/br), e copiar as chaves pública e privada do projeto
+* Criar na raiz do projeto o arquivo `.env.local`
+* Criar no arquivo `.env.local` as variáveis de ambiente, conforme o exemplo do arquivo `.env.example`
+* Colocar nas variáveis de ambiente os respectivos valores, incluindo as chaves copiadas do projeto do STRIPE
+
+Todos cartões de crédito disponíveis para teste (ex: 4242 4242 4242 4242) estão especificados na seguinte [documentação](https://stripe.com/docs/testing#cards) do Stripe
+
 <!-- #### 🎲 Rodando o Backend (servidor)
 
 ```bash
@@ -148,6 +159,8 @@ $ cd Ignite-Shop
 # Instale as dependências
 $ npm install
 
+# Configure as variáveis de ambiente (conforme já explicado anteriormente)
+
 # Execute a aplicação em modo de desenvolvimento
 $ npm run dev
 
@@ -173,11 +186,15 @@ $ npx expo start
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
-#### **Website**  ([Vite](https://vitejs.dev/guide/)  +  [TypeScript](https://www.typescriptlang.org/))
+#### **Website**  ([Next.js](https://nextjs.org/)  +  [TypeScript](https://www.typescriptlang.org/))
 
--   **[Styled-Components](https://tailwindcss.com/)**
--   **[React Roter Dom](https://reactrouter.com/en/v6.3.0)**
+-   **[Stitches](https://stitches.dev/)**
+-   **[Phosphor-Icons](https://phosphoricons.com/)**
+-   **[RadixUI](https://www.radix-ui.com/)**
 -   **[Axios](https://github.com/axios/axios)**
+-   **[Stripe](https://stripe.com/br)**
+-   **[Use Shopping Cart](https://useshoppingcart.com/docs)**
+-   **[Swiper](https://swiperjs.com/)**
 
 > Veja o arquivo  [package.json](https://github.com/pabloxt14/Ignite-Shop/package.json)
 
@@ -247,7 +264,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 --- -->
 
-## 🦸 Author
+## 🦸‍♂️ Author
 
 <a href="https://blog.rocketseat.com.br/author/thiago/">
  <img alt="PabloXT14" title="PabloXT14" src="https://avatars.githubusercontent.com/u/71723595?s=400&u=f7a1ec0c2e1f7cd1acf79f61043dbc75b1079de6&v=4" width="100px;" />
