@@ -147,7 +147,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 ---
 -->
 
-## 🦸‍♂️ Author
+## ✍ Author
 
 <img alt="Perfil Github" title="Perfil Github" src="https://github.com/PabloXT14.png" width="100px" />
 
