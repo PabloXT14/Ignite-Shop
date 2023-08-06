@@ -24,8 +24,8 @@
   <img src=".github/cover.png" alt="cover ignite-shop" />
 </p>
 
-<h4 align="center"> 
-	🚧 Aplicação Finalizada 🚧
+<h4 align="center">
+🚀 Aplicação Finalizada 🚀
 </h4>
 
 <p align="center">
