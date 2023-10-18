@@ -13,7 +13,7 @@
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/pabloxt14/Ignite-Shop">
   </a>
     
-   <img alt="License" src="https://img.shields.io/github/license/pabloxt14/Ignite-Shop">
+   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue">
 
    <a href="https://github.com/pabloxt14/Ignite-Shop/stargazers">
     <img alt="Stargazers" src="https://img.shields.io/github/stars/pabloxt14/Ignite-Shop?style=social">
@@ -128,7 +128,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Use Shopping Cart](https://useshoppingcart.com/docs)**
 -   **[Swiper](https://swiperjs.com/)**
 
-> Veja o arquivo  [package.json](https://github.com/pabloxt14/Ignite-Shop/package.json)
+> Para mais detalhes das dependências gerais da aplicação veja o arquivo  [package.json](https://github.com/PabloXT14/Ignite-Shop/blob/main/package.json)
 
 ---
 <!-- 
