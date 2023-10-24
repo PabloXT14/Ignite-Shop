@@ -128,7 +128,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Use Shopping Cart](https://useshoppingcart.com/docs)**
 -   **[Swiper](https://swiperjs.com/)**
 
-> Para mais detalhes das dependências gerais da aplicação veja o arquivo  [package.json](https://github.com/PabloXT14/Ignite-Shop/blob/main/package.json)
+> Para mais detalhes das dependências gerais da aplicação veja o arquivo  [package.json](./package.json)
 
 ---
 <!-- 
